@@ -41,8 +41,8 @@
         <a href="#galeria">Galeria</a>
         <a href="#contato" class="btn" style="padding:8px 12px;">Contato</a>
         <div class="nav-auth">
-          <a href="login.html" class="btn-login">Entrar</a>
-          <a href="cadastro.html" class="btn-signup">Criar conta</a>
+          <a href="login.php" class="btn-login">Entrar</a>
+          <a href="cadastro.php" class="btn-signup">Criar conta</a>
         </div>
       </nav>
     </div>
