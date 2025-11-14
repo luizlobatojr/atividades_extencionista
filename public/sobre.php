@@ -7,18 +7,8 @@
   <link rel="stylesheet" href="css/original.css">
 </head>
 <body>
-  <header>
-    <div class="container nav">
-      <a href="index.php" class="brand"><span class="logo">EX</span><span>Atividades Extensionistas</span></a>
-      <nav class="nav-links">
-        <a href="sobre.php">Sobre</a>
-        <a href="projetos.php">Projetos</a>
-        <a href="noticias.php">Notícias & Eventos</a>
-        <a href="galeria.php">Galeria</a>
-        <a href="contato.php" class="btn">Contato</a>
-      </nav>
-    </div>
-  </header>
+
+<?php include 'templates/header.php'; ?>
 
   <main class="container">
     <h1>O que são atividades extensionistas?</h1>
@@ -31,11 +21,8 @@
     </div>
   </main>
 
-  <footer>
-    <div class="container footer-bottom">
-      <small>© <span id="ano"></span> — Programa de Extensão</small>
-    </div>
-  </footer>
+<?php include 'templates/footer.php'; ?>
+
   <script>document.getElementById("ano").textContent = new Date().getFullYear();</script>
 </body>
 </html>

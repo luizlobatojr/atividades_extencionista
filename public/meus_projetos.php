@@ -2,32 +2,42 @@
 session_start();
 require_once 'conexao.php';
 
-// Busca todos os projetos cadastrados, do mais recente para o mais antigo
-$sql = "SELECT * FROM projetos ORDER BY id DESC";
-$result = $conn->query($sql);
+// Verifica se o usuário está logado
+if (!isset($_SESSION['usuario_id'])) {
+  header("Location: login.php");
+  exit();
+}
+
+$usuario_id = $_SESSION['usuario_id'];
+
+// Busca apenas os projetos do usuário logado
+$sql = "SELECT * FROM projetos WHERE usuario_id = ? ORDER BY id DESC";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$result = $stmt->get_result();
 ?>
 
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Projetos - Atividades Extensionistas</title>
+  <title>Meus Projetos - Atividades Extensionistas</title>
   <link rel="stylesheet" href="css/original.css">
 </head>
-
 <body>
 
-  <?php include 'templates/header.php'; ?>
+<?php include 'templates/header.php'; ?>
 
-  <main class="container">
+<main class="container">
   <section>
     <div class="head">
       <div>
-        <h2>Projetos</h2>
-        <p class="sub">Conheça iniciativas em andamento e concluídas.</p>
+        <h2>Meus Projetos</h2>
+        <p class="sub">Aqui estão os projetos que você cadastrou.</p>
       </div>
+      <a href="cadastrar_projeto.php" class="btn primary">+ Novo Projeto</a>
     </div>
 
     <div class="grid cols-3">
@@ -35,7 +45,6 @@ $result = $conn->query($sql);
         <?php while ($row = $result->fetch_assoc()): ?>
           <article class="card">
             <?php
-              // Imagem padrão
               $img = "https://images.unsplash.com/photo-1508780709619-79562169bc64?q=80&w=1200&auto=format&fit=crop";
             ?>
             <img src="<?= $img ?>" alt="<?= htmlspecialchars($row['titulo']); ?>">
@@ -52,15 +61,15 @@ $result = $conn->query($sql);
               <div class="spacer"></div>
 
               <div class="links">
-                <?php if (!empty($row['projeto_arquivo']) && file_exists($row['projeto_arquivo'])): ?>
-                  <a href="<?= $row['projeto_arquivo']; ?>" class="btn primary" target="_blank">Projeto</a>
+                <?php if (!empty($row['projeto_arquivo'])): ?>
+                  <a href="<?= $row['projeto_arquivo']; ?>" class="btn ghost" target="_blank">Projeto</a>
                 <?php endif; ?>
 
-                <?php if (!empty($row['cronograma']) && file_exists($row['cronograma'])): ?>
+                <?php if (!empty($row['cronograma'])): ?>
                   <a href="<?= $row['cronograma']; ?>" class="btn ghost" target="_blank">Cronograma</a>
                 <?php endif; ?>
 
-                <?php if (!empty($row['termo']) && file_exists($row['termo'])): ?>
+                <?php if (!empty($row['termo'])): ?>
                   <a href="<?= $row['termo']; ?>" class="btn ghost" target="_blank">Termo</a>
                 <?php endif; ?>
               </div>
@@ -68,7 +77,7 @@ $result = $conn->query($sql);
           </article>
         <?php endwhile; ?>
       <?php else: ?>
-        <p>Nenhum projeto cadastrado no momento.</p>
+        <p>Nenhum projeto cadastrado ainda.</p>
       <?php endif; ?>
     </div>
   </section>
@@ -81,7 +90,9 @@ $result = $conn->query($sql);
 </script>
 
 </body>
-
 </html>
 
-<?php $conn->close(); ?>
+<?php
+$stmt->close();
+$conn->close();
+?>

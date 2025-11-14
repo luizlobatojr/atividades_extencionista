@@ -10,20 +10,8 @@
   <link rel="stylesheet" href="css/original.css">
 </head>
 <body>
-  <header>
-    <div class="container nav">
-      <a href="index.php" class="brand">
-        <span class="logo">EX</span><span>Atividades Extensionistas</span>
-      </a>
-      <nav class="nav-links">
-        <a href="sobre.php">Sobre</a>
-        <a href="projetos.php">Projetos</a>
-        <a href="noticias.php">Notícias & Eventos</a>
-        <a href="galeria.php">Galeria</a>
-        <a href="contato.php" class="btn">Contato</a>
-      </nav>
-    </div>
-  </header>
+
+<?php include 'templates/header.php'; ?>
 
   <main class="container auth-page">
     <h1>Entrar</h1>
@@ -37,15 +25,11 @@
       <input type="password" id="senha" name="senha" placeholder="Sua senha" required>
 
       <button type="submit" class="btn primary">Entrar</button>
-      <p class="muted">Não tem conta? <a href="cadastro.php">Crie uma agora</a>.</p>
+      <p class="muted">Não tem conta? <a href="cadastro_usuario.php" class="btn">Crie uma agora</a>
     </form>
   </main>
 
-  <footer>
-    <div class="container footer-bottom">
-      <small>© <span id="ano"></span> — Programa de Extensão</small>
-    </div>
-  </footer>
+<?php include 'templates/footer.php'; ?>
 
   <script>document.getElementById("ano").textContent = new Date().getFullYear();</script>
 </body>

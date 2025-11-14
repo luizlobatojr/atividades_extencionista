@@ -23,22 +23,9 @@ $nome = $_SESSION['usuario_nome'];
 </head>
 
 <body>
-  <header>
-    <div class="container nav">
-      <a href="index.php" class="brand">
-        <span class="logo">EX</span><span>Atividades Extensionistas</span>
-      </a>
-      <nav class="nav-links">
-
-        <a href="sobre.php">Sobre</a>
-        <a href="projetos.php">Projetos</a>
-        <a href="noticias.php">Notícias & Eventos</a>
-        <a href="galeria.php">Galeria</a>
-        <a href="contato.php" class="btn">Contato</a>
-        <a href="logout.php" class="btn">Sair</a>
-      </nav>
-    </div>
-  </header>
+  
+    <?php include 'templates/header.php'; ?>
+  
 
   <section class="hero">
     <div class="container">
@@ -64,11 +51,8 @@ $nome = $_SESSION['usuario_nome'];
     </div>
   </section>
 
-  <footer>
-    <div class="container footer-bottom">
-      <small>© <span id="ano"></span> — Programa de Extensão</small>
-    </div>
-  </footer>
+   <?php include 'templates/footer.php'; ?>
+
   <script>
     document.getElementById("ano").textContent = new Date().getFullYear();
   </script>
