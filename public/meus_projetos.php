@@ -39,7 +39,7 @@ $result = $stmt->get_result();
         <h2>Meus Projetos</h2>
         <p class="sub">Aqui estão os projetos que você cadastrou.</p>
       </div>
-      <a href="cadastrar_projeto.php" class="btn primary">+ Novo Projeto</a>
+      <a href="cadastro_projeto.php" class="btn primary">+ Novo Projeto</a>
     </div>
 
     <div class="grid cols-3">

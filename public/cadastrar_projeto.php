@@ -77,7 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         nome_coordenador, matricula_coordenador, email_coordenador, telefone_coordenador, curso_coordenador,
         tipo_atividade, modalidade,
         projeto_arquivo, cronograma, termo
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     $stmt = $conn->prepare($sql);
     if ($stmt === false) {
