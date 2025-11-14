@@ -1,10 +1,15 @@
   <header>
     <div class="container nav">
-      <?php
-      session_start(); // Inicia a sessão
-      // Verifica se o usuário está logado
-      $pagina_destino = isset($_SESSION['usuario_id']) ? 'dashboard.php' : 'index.php';
-      ?>
+    <?php
+    // Inicia a sessão somente se ainda não houver uma ativa (evita warnings em páginas que
+    // chamam session_start() antes de incluir o header)
+    if (session_status() === PHP_SESSION_NONE) {
+      session_start();
+    }
+
+    // Define destino do link da marca com base na sessão
+    $pagina_destino = isset($_SESSION['usuario_id']) ? 'dashboard.php' : 'index.php';
+    ?>
 
       <a href="<?= $pagina_destino ?>" class="brand">
         <span class="logo">EX</span><span>Atividades Extensionistas</span>

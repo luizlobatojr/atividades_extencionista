@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
 require_once 'conexao.php';
 
 // Busca todos os projetos cadastrados, do mais recente para o mais antigo

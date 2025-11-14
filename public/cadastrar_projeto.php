@@ -1,12 +1,19 @@
 <?php
-// Inicia a sessão (caso precise verificar login)
-session_start();
+// Inicia a sessão (necessário para associar o projeto ao usuário logado)
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // CONFIGURAÇÃO DO BANCO DE DADOS
 require_once 'conexao.php';
 
-// Pega o ID do usuário logado
-$usuario_id = $_SESSION['usuario_id'];  // ← ESTE É O TRECHO
+// Verifica autenticação e obtém o ID do usuário logado
+if (!isset($_SESSION['usuario_id'])) {
+    // Não autenticado — redireciona ao login
+    header("Location: login.php");
+    exit();
+}
+$usuario_id = (int) $_SESSION['usuario_id'];
 
 // Verifica conexão
 if ($conn->connect_error) {
@@ -44,20 +51,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $cronograma = "";
     $termo = "";
 
+    // Usa nome de arquivo com time + uniqid para reduzir chance de colisão
     if (isset($_FILES["projeto_arquivo"]) && $_FILES["projeto_arquivo"]["error"] === 0) {
-        $nome_arquivo = time() . "_" . basename($_FILES["projeto_arquivo"]["name"]);
+        $nome_arquivo = time() . "_" . uniqid() . "_" . basename($_FILES["projeto_arquivo"]["name"]);
         move_uploaded_file($_FILES["projeto_arquivo"]["tmp_name"], $diretorio . $nome_arquivo);
         $projeto_arquivo = $diretorio . $nome_arquivo;
     }
 
     if (isset($_FILES["cronograma"]) && $_FILES["cronograma"]["error"] === 0) {
-        $nome_arquivo = time() . "_" . basename($_FILES["cronograma"]["name"]);
+        $nome_arquivo = time() . "_" . uniqid() . "_" . basename($_FILES["cronograma"]["name"]);
         move_uploaded_file($_FILES["cronograma"]["tmp_name"], $diretorio . $nome_arquivo);
         $cronograma = $diretorio . $nome_arquivo;
     }
 
     if (isset($_FILES["termo"]) && $_FILES["termo"]["error"] === 0) {
-        $nome_arquivo = time() . "_" . basename($_FILES["termo"]["name"]);
+        $nome_arquivo = time() . "_" . uniqid() . "_" . basename($_FILES["termo"]["name"]);
         move_uploaded_file($_FILES["termo"]["tmp_name"], $diretorio . $nome_arquivo);
         $termo = $diretorio . $nome_arquivo;
     }
@@ -72,8 +80,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     $stmt = $conn->prepare($sql);
+    if ($stmt === false) {
+        die('Falha ao preparar statement: ' . $conn->error);
+    }
+
+    // Tipos: i (usuario_id), s (titulo), s (descricao), s (area), s (objetivo), s (publico), s (local),
+    // i (carga_horaria), s (data_inicio), s (data_fim), e assim por diante (total 20 parâmetros)
+    $carga_horaria = (int) $carga_horaria;
+
+    $types = 'issssssissssssssssss';
     $stmt->bind_param(
-        "issssssissssssssssss",
+        $types,
+        $usuario_id,
         $titulo,
         $descricao,
         $area,
