@@ -1,0 +1,8 @@
+# Exemplo de variáveis de ambiente para o app
+# Copie este arquivo para um local seguro e configure no seu ambiente (não comitar segredos)
+
+# Banco de dados
+DB_HOST=localhost
+DB_NAME=extensao
+DB_USER=root
+DB_PASS=

@@ -1,8 +1,5 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
+require_once __DIR__ . '/includes/init.php';
 include 'conexao.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -23,14 +20,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Verifica senha
         if (password_verify($senha, $hash)) {
-            // Cria variáveis de sessão
-            $_SESSION['usuario_id'] = $id;
-            $_SESSION['usuario_nome'] = $nome;
+                // Regenera id da sessão (previne session fixation)
+                if (session_status() === PHP_SESSION_ACTIVE) {
+                    session_regenerate_id(true);
+                }
 
-            // Redireciona para a página protegida
-            header("Location: dashboard.php");
-            exit();
-        } else {
+                // Cria variáveis de sessão
+                $_SESSION['usuario_id'] = $id;
+                $_SESSION['usuario_nome'] = $nome;
+
+                // Redireciona para a página protegida
+                header("Location: dashboard.php");
+                exit();
+            } else {
             echo "Senha incorreta!";
         }
     } else {

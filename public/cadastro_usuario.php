@@ -14,6 +14,7 @@
     <p>Cadastre-se para participar de projetos e receber novidades.</p>
 
     <form action="cadastrar.php" method="post" class="auth-form">
+      <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '') ?>">
       <label for="nome">Nome completo</label>
       <input type="text" id="nome" name="nome" placeholder="Seu nome" required>
 

@@ -18,6 +18,7 @@
     <p>Acesse sua conta para acompanhar seus projetos e atividades.</p>
 
     <form action="usuario.php" method="post" class="auth-form">
+      <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '') ?>">
       <label for="email">E-mail</label>
       <input type="email" id="email" name="email" placeholder="voce@email.com" required>
 

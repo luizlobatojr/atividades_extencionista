@@ -1,0 +1,27 @@
+-- Exemplo de DDL para criar a tabela `projetos` compatível com os campos usados no projeto
+CREATE TABLE IF NOT EXISTS projetos (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  usuario_id INT NOT NULL,
+  titulo VARCHAR(255) NOT NULL,
+  descricao TEXT,
+  area VARCHAR(100),
+  objetivo TEXT,
+  publico VARCHAR(255),
+  `local` VARCHAR(255),
+  carga_horaria INT,
+  data_inicio DATE,
+  data_fim DATE,
+  nome_coordenador VARCHAR(255),
+  matricula_coordenador VARCHAR(100),
+  email_coordenador VARCHAR(255),
+  telefone_coordenador VARCHAR(50),
+  curso_coordenador VARCHAR(255),
+  tipo_atividade VARCHAR(100),
+  modalidade VARCHAR(100),
+  projeto_arquivo VARCHAR(500),
+  cronograma VARCHAR(500),
+  termo VARCHAR(500),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NULL DEFAULT NULL,
+  INDEX (usuario_id)
+);

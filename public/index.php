@@ -20,7 +20,7 @@
         <p class="lead">Projetos de impacto social conduzidos por estudantes e docentes.</p>
         <div class="cta">
           <a href="projetos.php" class="btn primary">Ver projetos</a>
-          <a href="cadastro.php" class="btn ghost">Inscreva-se</a>
+          <a href="cadastro_usuario.php" class="btn ghost">Inscreva-se</a>
         </div>
       </div>
     </div>

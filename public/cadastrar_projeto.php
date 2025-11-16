@@ -1,8 +1,8 @@
 <?php
-// Inicia a sessão (necessário para associar o projeto ao usuário logado)
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+// Inicialização comum (sessão segura, CSRF, headers)
+require_once __DIR__ . '/includes/init.php';
+// Helper de upload
+require_once __DIR__ . '/includes/upload.php';
 
 // CONFIGURAÇÃO DO BANCO DE DADOS
 require_once 'conexao.php';
@@ -22,6 +22,11 @@ if ($conn->connect_error) {
 
 // --- VERIFICA SE O FORMULÁRIO FOI ENVIADO ---
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+    // Validação CSRF
+    if (!validate_csrf_token($_POST['csrf_token'] ?? '')) {
+        die('Token CSRF inválido.');
+    }
 
     // 1️⃣ Recebe os dados do formulário
     $titulo = $_POST["titulo"];
@@ -43,31 +48,45 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $tipo_atividade = $_POST["tipo_atividade"];
     $modalidade = $_POST["modalidade"];
 
-    // 2️⃣ Upload de arquivos (se houver)
-    $diretorio = "uploads/";
-    if (!is_dir($diretorio)) mkdir($diretorio, 0755, true);
+    // 2️⃣ Upload de arquivos (se houver) - usa helper
+    $diretorio = __DIR__ . '/uploads';
+    $allowedMimes = [
+        'application/pdf',
+        'application/msword',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    ];
+    $maxBytes = 5 * 1024 * 1024; // 5MB
 
     $projeto_arquivo = "";
     $cronograma = "";
     $termo = "";
 
-    // Usa nome de arquivo com time + uniqid para reduzir chance de colisão
-    if (isset($_FILES["projeto_arquivo"]) && $_FILES["projeto_arquivo"]["error"] === 0) {
-        $nome_arquivo = time() . "_" . uniqid() . "_" . basename($_FILES["projeto_arquivo"]["name"]);
-        move_uploaded_file($_FILES["projeto_arquivo"]["tmp_name"], $diretorio . $nome_arquivo);
-        $projeto_arquivo = $diretorio . $nome_arquivo;
+    if (isset($_FILES["projeto_arquivo"]) && $_FILES["projeto_arquivo"]["error"] === UPLOAD_ERR_OK) {
+        $res = handle_upload_field($_FILES["projeto_arquivo"], $diretorio, $allowedMimes, $maxBytes);
+        if ($res['success']) {
+            // salvar caminho relativo para armazenamento no DB
+            $projeto_arquivo = 'uploads/' . basename($res['path']);
+        } else {
+            die('Erro no upload do projeto: ' . $res['error']);
+        }
     }
 
-    if (isset($_FILES["cronograma"]) && $_FILES["cronograma"]["error"] === 0) {
-        $nome_arquivo = time() . "_" . uniqid() . "_" . basename($_FILES["cronograma"]["name"]);
-        move_uploaded_file($_FILES["cronograma"]["tmp_name"], $diretorio . $nome_arquivo);
-        $cronograma = $diretorio . $nome_arquivo;
+    if (isset($_FILES["cronograma"]) && $_FILES["cronograma"]["error"] === UPLOAD_ERR_OK) {
+        $res = handle_upload_field($_FILES["cronograma"], $diretorio, $allowedMimes, $maxBytes);
+        if ($res['success']) {
+            $cronograma = 'uploads/' . basename($res['path']);
+        } else {
+            die('Erro no upload do cronograma: ' . $res['error']);
+        }
     }
 
-    if (isset($_FILES["termo"]) && $_FILES["termo"]["error"] === 0) {
-        $nome_arquivo = time() . "_" . uniqid() . "_" . basename($_FILES["termo"]["name"]);
-        move_uploaded_file($_FILES["termo"]["tmp_name"], $diretorio . $nome_arquivo);
-        $termo = $diretorio . $nome_arquivo;
+    if (isset($_FILES["termo"]) && $_FILES["termo"]["error"] === UPLOAD_ERR_OK) {
+        $res = handle_upload_field($_FILES["termo"], $diretorio, $allowedMimes, $maxBytes);
+        if ($res['success']) {
+            $termo = 'uploads/' . basename($res['path']);
+        } else {
+            die('Erro no upload do termo: ' . $res['error']);
+        }
     }
 
     // 3️⃣ Prepara o comando SQL
