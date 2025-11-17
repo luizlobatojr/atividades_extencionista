@@ -34,9 +34,7 @@ $nome = $_SESSION['usuario_nome'];
                     <a href="editar_perfil.php" class="btn primary">
                         <i class="fi fi-sr-folder"></i> Editar Perfil
                     </a>
-                    <a href="noticias.php" class="btn primary">
-                        <i class="fi fi-ss-calendar"></i> Notícias & Eventos
-                    </a>
+                    
                     <a href="dashboard.php" class="btn primary">
                         <i class="fi fi-sr-user"></i> Voltar ao Dashboard
                     </a>
