@@ -17,6 +17,7 @@ $pagina_destino = isset($_SESSION['usuario_id']) ? 'dashboard.php' : 'index.php'
         <a href="cadastro_usuario.php">Inscreva-se</a>
         <a href="login.php">Login</a>
         <?php else: ?>
+        <a href="perfil.php">Meu Perfil</a>
         <a href="logout.php">Sair</a>
         <?php endif; ?>
         <a href="sobre.php">Sobre</a>
