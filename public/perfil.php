@@ -28,13 +28,12 @@ $nome = $_SESSION['usuario_nome'];
         <div class="container">
             <div>
                 <div class="kicker">Perfil</div>
-                <h2>Bem-vindo, <?php echo htmlspecialchars($nome); ?>!</h2>
+                <h2>Bem-vindo(a), <?php echo htmlspecialchars($nome); ?>!</h2>
                 <p class="lead">Acesse as opções abaixo para gerenciar suas atividades extensionistas.</p>
                 <div class="cta">
-                    <a href="#" class="btn primary">
-                        <i class="fi fi-sr-folder"></i> Editar
+                    <a href="editar_perfil.php" class="btn primary">
+                        <i class="fi fi-sr-folder"></i> Editar Perfil
                     </a>
-                  
                     <a href="noticias.php" class="btn primary">
                         <i class="fi fi-ss-calendar"></i> Notícias & Eventos
                     </a>
@@ -42,8 +41,8 @@ $nome = $_SESSION['usuario_nome'];
                         <i class="fi fi-sr-user"></i> Voltar ao Dashboard
                     </a>
                 </div>
-
             </div>
+
             <div class="hero-card">
                 <div class="stats">
                     <div class="stat">

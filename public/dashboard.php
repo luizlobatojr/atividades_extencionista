@@ -31,7 +31,7 @@ $nome = $_SESSION['usuario_nome'];
     <div class="container">
       <div>
         <div class="kicker">Painel de Controle</div>
-        <h2>Bem-vindo, <?php echo htmlspecialchars($nome); ?>!</h2>
+        <h2>Bem-vindo(a), <?php echo htmlspecialchars($nome); ?>!</h2>
         <p class="lead">Acesse as opções abaixo para gerenciar suas atividades extensionistas.</p>
         <div class="cta">
           <a href="meus_projetos.php" class="btn primary">

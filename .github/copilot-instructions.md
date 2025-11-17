@@ -1,4 +1,4 @@
-## Objetivo
+git## Objetivo
 
 Instruções concisas para agentes de código que vão editar este repositório PHP procedural (aplicação web simples localizada em `public/`). Forneça mudanças pequenas, verificáveis e compatíveis com a estrutura existente.
 

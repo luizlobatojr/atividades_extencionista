@@ -13,7 +13,7 @@
   <section>
     <div class="container">
       <h2>Cadastro efetuado com sucesso!</h2>
-      <p>Você já pode <a href="login.php" class="btn">fazer login</a>.</p>
+      <p>Você já pode <a href="login.php" class="btn">fazer login</a></p>
     
     </div>
   </section>
