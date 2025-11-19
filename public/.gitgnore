@@ -1,3 +1,10 @@
+# Configuração de ambiente
 .env
 
+# Arquivos de debug
 debug.php
+
+# Outros padrões comuns (opcional)
+*.log
+/vendor/
+node_modules/
