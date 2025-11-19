@@ -2,7 +2,7 @@
 
 
 // Inclui inicialização e conexão
-require_once __DIR__ . '/includes/init.php';
+require_once __DIR__ . '/../includes/init.php';
 include 'conexao.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

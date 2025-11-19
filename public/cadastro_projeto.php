@@ -1,4 +1,3 @@
-<?php require_once __DIR__ . '/includes/init.php'; ?>
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -17,30 +16,8 @@
         <p>Cadastre-se para participar de projetos e receber novidades.</p>
 
         <form action="cadastrar_projeto.php" method="post" enctype="multipart/form-data" class="auth-form">
-            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                $_SESSION['csrf_token']
-            ) ?>">
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']) ?>">
+
             <!-- Identificação do Projeto -->
             <h3>1. Identificação do Projeto</h3>
             <label for="titulo">Título do Projeto</label>
@@ -147,7 +124,7 @@
         </form>
     </main>
 
-    <?php include 'templates/footer.php'; ?>
+    <?php include 'templates/footer.php';  ?>
 
 </body>
 

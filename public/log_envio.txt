@@ -38,3 +38,17 @@
 2025-11-19 13:41:49 - Erro:  - Invalid address:  (to): 
 2025-11-19 13:41:51 - Sucesso: lobatojr@gmail.com
 2025-11-19 13:41:52 - Sucesso: Junior@gmail.com
+2025-11-19 13:46:26 - Sucesso: luizlobatojr@gmail.com
+2025-11-19 13:46:26 - Erro:  - Invalid address:  (to): 
+2025-11-19 13:46:28 - Sucesso: lobatojr@gmail.com
+2025-11-19 13:46:29 - Sucesso: Junior@gmail.com
+2025-11-19 19:30:26 - Sucesso: luizlobatojr@gmail.com
+2025-11-19 19:30:26 - Erro:  - Invalid address:  (to): 
+2025-11-19 19:30:28 - Sucesso: lobatojr@gmail.com
+2025-11-19 19:30:29 - Sucesso: Junior@gmail.com
+2025-11-19 19:38:03 - Erro: luizlobatojr@gmail.com - SMTP Error: Could not authenticate.
+2025-11-19 19:38:07 - Erro: luizlobatojr@gmail.com - SMTP Error: Could not authenticate.
+2025-11-19 19:38:51 - Erro: luizlobatojr@gmail.com - SMTP Error: Could not authenticate.
+2025-11-19 19:46:35 - Erro: luizlobatojr@gmail.com - SMTP Error: Could not authenticate.
+2025-11-19 19:46:49 - Erro: luizlobatojr@gmail.com - SMTP Error: Could not authenticate.
+2025-11-19 19:47:41 - Erro: luizlobatojr@gmail.com - SMTP Error: Could not authenticate.

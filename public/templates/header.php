@@ -1,6 +1,6 @@
 <?php
 // Inclui inicialização comum (sessão segura, CSRF, headers quando possível)
-require_once __DIR__ . '/../includes/init.php';
+require_once __DIR__ . '/../../includes/init.php';
 
 // Define destino do link da marca com base na sessão
 $pagina_destino = isset($_SESSION['usuario_id']) ? 'dashboard.php' : 'index.php';

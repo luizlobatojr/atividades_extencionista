@@ -1,11 +1,13 @@
 <?php
+
+
 // Inicialização comum (sessão segura, CSRF, headers)
-require_once __DIR__ . '/includes/init.php';
+require_once __DIR__ . '/../includes/init.php';
 // Helper de upload
-require_once __DIR__ . '/includes/upload.php';
+require_once __DIR__ . '/../includes/upload.php';
 
 // CONFIGURAÇÃO DO BANCO DE DADOS
-require_once 'conexao.php';
+require_once __DIR__ . '/conexao.php';
 
 // Verifica autenticação e obtém o ID do usuário logado
 if (!isset($_SESSION['usuario_id'])) {

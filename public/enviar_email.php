@@ -1,87 +1,62 @@
 <?php
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
+require 'conexao.php';
+require 'mail_config.php';
 
-require '../vendor/autoload.php'; // Composer PHPMailer
-require 'conexao.php';             // Deve definir $conn = new mysqli(...)
+$mensagem = '';
 
-// Verificar conexão
-if ($conn->connect_errno) {
-    die("Falha na conexão com MySQL: " . $conn->connect_error);
-}
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email = $_POST['email'] ?? '';
+    
+    if (empty($email)) {
+        $mensagem = "Preencha seu e-mail.";
+    } else {
+        // Verifica se usuário existe
+        $stmt = $conn->prepare("SELECT id FROM usuarios WHERE email = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        if ($result->num_rows === 0) {
+            $mensagem = "E-mail não encontrado.";
+        } else {
+            $token = bin2hex(random_bytes(32));
+            $stmt = $conn->prepare("INSERT INTO tokens_reset (email, token, expiracao) VALUES (?, ?, DATE_ADD(NOW(), INTERVAL 1 HOUR))");
+            $stmt->bind_param("ss", $email, $token);
+            $stmt->execute();
+            $stmt->close();
 
-// --- CONFIGURAÇÃO DO SMTP PARA GMAIL ---
-$smtpHost = 'smtp.gmail.com';
-$smtpPort = 587;
-$smtpSecure = 'tls';
-$smtpUser = 'luizlobatojr@gmail.com';
-$smtpPass = 'mfsg fnkz cnco hncr'; // Senha de aplicativo do Gmail
+            // Enviar e-mail
+            $mail = criarMailer();
+            $mail->setFrom($_ENV['SMTP_USER'], 'Meu Site');
+            $mail->addAddress($email);
+            $mail->Subject = 'Redefinir senha';
+            $link = "https://seusite.com/reset_senha.php?token=$token";
+            $mail->Body = "Olá!\n\nClique no link abaixo para redefinir sua senha (válido por 1 hora):\n$link";
 
-// --- BUSCAR USUÁRIOS ---
-$result = $conn->query("SELECT nome, email FROM usuarios");
-
-if (!$result || $result->num_rows == 0) {
-    die("Nenhum usuário encontrado no banco de dados.");
-}
-
-// --- LOOP DE ENVIO ---
-while ($row = $result->fetch_assoc()) {
-
-    $mail = new PHPMailer(true);
-    $mail->SMTPDebug = 2;
-    $mail->Debugoutput = 'html';
-
-    try {
-        // Configuração SMTP
-        $mail->isSMTP();
-        $mail->Host       = $smtpHost;
-        $mail->SMTPAuth   = true;
-        $mail->Username   = $smtpUser;
-        $mail->Password   = $smtpPass;
-        $mail->SMTPSecure = $smtpSecure;
-        $mail->Port       = $smtpPort;
-
-        // Remetente e destinatário
-        $mail->setFrom($smtpUser, 'Seu Sistema');
-        $mail->addAddress($row['email'], $row['nome']);
-
-        // Gerar token seguro
-        $token = bin2hex(random_bytes(16));
-        $resetLink = "localhost:8080/redefinir_senha.php?token=$token";
-
-        // Salvar token no banco
-        $query = $conn->prepare("
-            INSERT INTO tokens_reset (email, token, expiracao)
-            VALUES (?, ?, DATE_ADD(NOW(), INTERVAL 1 HOUR))
-        ");
-        $query->bind_param("ss", $row['email'], $token);
-        $query->execute();
-
-        if ($query->error) {
-            echo "<b>Erro MySQL:</b> " . $query->error . "<br>";
+            if ($mail->send()) {
+                $mensagem = "E-mail de redefinição enviado!";
+            } else {
+                $mensagem = "Erro ao enviar e-mail. Tente novamente.";
+                error_log($mail->ErrorInfo);
+            }
         }
-
-        // Conteúdo do e-mail
-        $mail->isHTML(true);
-        $mail->Subject = 'Redefinição de senha';
-        $mail->Body    = "
-            <p>Olá, {$row['nome']}!</p>
-            <p>Clique no link abaixo para redefinir sua senha:</p>
-            <p><a href='$resetLink'>$resetLink</a></p>
-        ";
-        $mail->AltBody = "Olá, {$row['nome']}! Acesse este link: $resetLink";
-
-        // Enviar e-mail
-        $mail->send();
-        echo "✔ E-mail enviado para {$row['email']}<br>";
-        file_put_contents('log_envio.txt', date('Y-m-d H:i:s') . " - Sucesso: {$row['email']}\n", FILE_APPEND);
-
-    } catch (Exception $e) {
-        echo "✖ Erro ao enviar para {$row['email']}: {$mail->ErrorInfo}<br>";
-        file_put_contents('log_envio.txt', date('Y-m-d H:i:s') . " - Erro: {$row['email']} - {$mail->ErrorInfo}\n", FILE_APPEND);
     }
 }
-
-$conn->close();
-echo "<br>Envio finalizado!";
 ?>
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Solicitar Redefinição de Senha</title>
+</head>
+<body>
+<h2>Solicitar Redefinição de Senha</h2>
+<?php if ($mensagem) echo "<p>$mensagem</p>"; ?>
+<form method="post">
+    <label>E-mail:</label>
+    <input type="email" name="email" required>
+    <button type="submit">Enviar link</button>
+</form>
+</body>
+</html>

@@ -1,21 +1,24 @@
 <?php
+require_once __DIR__ . '/../vendor/autoload.php'; // carregando php dotenv
 
-// Verifica se mysqli está habilitado
-if (!class_exists('mysqli')) {
-    die("Erro: a extensão mysqli não está habilitada no PHP.");
-}
+// Carrega variáveis do .env
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv->load();
 
-// Credenciais do banco (pode usar variáveis de ambiente)
-$host = getenv('DB_HOST') ?: '127.0.0.1';
-$db   = getenv('DB_NAME') ?: 'extensao';
-$user = getenv('DB_USER') ?: 'root';
-$pass = getenv('DB_PASS') ?: '';
+// Pegando variáveis do .env
+$db_host = $_ENV['DB_HOST'] ?? '127.0.0.1';
+$db_user = $_ENV['DB_USER'] ?? 'root';
+$db_pass = $_ENV['DB_PASS'] ?? '';
+$db_name = $_ENV['DB_NAME'] ?? 'extensao';
 
-// Tenta criar a conexão
-$conn = new mysqli($host, $user, $pass, $db);
+// Conecta ao banco de dados
+$conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
 
-// Checa conexão
+// Verifica se a conexão deu certo
 if ($conn->connect_error) {
-    error_log('Erro de conexão com o DB: ' . $conn->connect_error);
-    die('Falha ao conectar com o banco de dados.');
+    die("Falha na conexão com o banco de dados: " . $conn->connect_error);
 }
+
+// Configura charset UTF-8
+$conn->set_charset("utf8");
+?>
