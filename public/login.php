@@ -1,6 +1,3 @@
-
-
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -26,7 +23,14 @@
       <input type="password" id="senha" name="senha" placeholder="Sua senha" required>
 
       <button type="submit" class="btn primary">Entrar</button>
-      <p class="muted">Não tem conta? <a href="cadastro_usuario.php" class="btn">Crie uma agora</a>
+      <p class="muted">Não tem conta? 
+        <a href="cadastro_usuario.php" class="btn">Crie uma agora</a>
+        
+    </form>
+      </p>
+      <p class="muted">
+        Esqueceu sua senha? <a href="recuperar_senha.php" class="btn">Recupere aqui</a>
+      </p>
     </form>
   </main>
 

@@ -1,4 +1,14 @@
 <?php
+// Define os parâmetros do cookie da sessão antes de iniciar
+session_set_cookie_params([
+    'lifetime' => 3600,        // duração de 1 hora
+    'path' => '/',
+    'domain' => '',            // deixe vazio para o domínio atual
+    'secure' => false,         // true se estiver usando HTTPS
+    'httponly' => true,
+    'samesite' => 'Strict'     // ou 'Lax'
+]);
+
 if (session_status() === PHP_SESSION_NONE) {
   session_start();
 }

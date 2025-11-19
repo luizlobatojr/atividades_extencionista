@@ -7,7 +7,7 @@
 
         <div>
             <strong>Mapa do site</strong>
-            <ul class="footer-links">
+            <ul class="footer-links" style="list-style:none; padding:0; margin:8px 0 0; display:grid; gap:6px;">
                 <li><a href="cadastro.php">Inscreva-se</a></li>
                 <li><a href="login.php">Login</a></li>
                 <li><a href="sobre.php">Sobre</a></li>
@@ -31,7 +31,7 @@
 
         <div>
             <strong>Redes</strong>
-            <ul class="footer-links">
+            <ul class="footer-links" style="list-style:none; padding:0; margin:8px 0 0; display:grid; gap:6px;">
                 <li><a href="https://www.instagram.com" target="_blank">Instagram</a></li>
                 <li><a href="https://www.youtube.com" target="_blank">YouTube</a></li>
                 <li><a href="https://www.linkedin.com" target="_blank">LinkedIn</a></li>
