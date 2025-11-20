@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $mail->setFrom($_ENV['SMTP_USER'], 'Meu Site');
                 $mail->addAddress($email);
                 $mail->Subject = 'Redefinir senha';
-                $link = "https://seusite.com/reset_senha.php?token=$token";
+                $link = "localhost:8080/salva_nova_senha.php?token=$token";
                 $mail->Body = "Olá!\n\nClique no link abaixo para redefinir sua senha (válido por 1 hora):\n$link";
                 $mail->send();
                 $mensagem = "E-mail de redefinição enviado com sucesso!";
