@@ -51,6 +51,7 @@ $nome = $_SESSION['usuario_nome'];
     </div>
   </section>
 
+
    <?php include 'templates/footer.php'; ?>
 
   <script>

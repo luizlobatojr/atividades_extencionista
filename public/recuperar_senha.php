@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -29,7 +31,7 @@
 
                 <button type="submit" class="btn primary" style="width: 100%; margin-top: 12px;">Enviar Instruções</button>
             </form>
-
+            
             <p class="sub" style="margin-top: 20px; text-align: center;">
                 Lembrou sua senha? <a href="/login" class="btn">Faça login</a>
             </p>

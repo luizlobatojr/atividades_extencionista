@@ -21,7 +21,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // Carrega variáveis de ambiente com phpdotenv
 require_once __DIR__ . '/../vendor/autoload.php'; // se estiver usando vlucas/phpdotenv
-$dotenv = Dotenv\Dotenv::createImmutable('/home/luizlobatojr/atividades_extencionista');
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
 
 // Pega as variáveis do .env ou fallback
