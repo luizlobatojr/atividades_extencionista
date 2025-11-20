@@ -1,7 +1,7 @@
 <?php
-require __DIR__ . '/../vendor/autoload.php'; // Composer
-require __DIR__ . '/conexao.php';           // Conexão com DB
-require __DIR__ . '/mail_config.php';      // PHPMailer
+require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/conexao.php';
+require __DIR__ . '/mail_config.php';
 
 $mensagem = '';
 
@@ -20,37 +20,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($result->num_rows === 0) {
             $mensagem = "E-mail não encontrado.";
         } else {
-            // Remove tokens antigos
+
+            // remove tokens antigos
             $stmt = $conn->prepare("DELETE FROM tokens_reset WHERE email = ?");
             $stmt->bind_param("s", $email);
             $stmt->execute();
-            $stmt->close();
 
-            // Cria token
+            // cria novo token
             $token = bin2hex(random_bytes(32));
             $stmt = $conn->prepare("INSERT INTO tokens_reset (email, token, expiracao) VALUES (?, ?, DATE_ADD(NOW(), INTERVAL 1 HOUR))");
             $stmt->bind_param("ss", $email, $token);
             $stmt->execute();
-            $stmt->close();
 
-            // Envia e-mail
+            // envia email
             try {
                 $mail = criarMailer();
                 $mail->setFrom($_ENV['SMTP_USER'], 'Meu Site');
                 $mail->addAddress($email);
-                $mail->Subject = 'Redefinir senha';
-                $link = "localhost:8080/salva_nova_senha.php?token=$token";
-                $mail->Body = "Olá!\n\nClique no link abaixo para redefinir sua senha (válido por 1 hora):\n$link";
+                $mail->Subject = "Redefinir senha";
+
+                // link automático
+                $base_url = (isset($_SERVER['HTTPS']) ? "https://" : "http://") . $_SERVER['HTTP_HOST'];
+                $link = $base_url . "/resetar_senha.php?token=$token";
+
+                $mail->Body = "Olá!\n\nClique no link abaixo para redefinir sua senha:\n$link\n\nO link é válido por 1 hora.";
                 $mail->send();
-                $mensagem = "E-mail de redefinição enviado com sucesso!";
-            } catch (PHPMailer\PHPMailer\Exception $e) {
-                error_log("Erro ao enviar e-mail: " . $e->getMessage());
-                $mensagem = "Não foi possível enviar o e-mail. Tente novamente mais tarde.";
+
+                $mensagem = "E-mail enviado! Verifique sua caixa de entrada.";
+            } catch (Exception $e) {
+                error_log("Erro: " . $e->getMessage());
+                $mensagem = "Erro ao enviar o e-mail.";
             }
         }
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -72,16 +77,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <p class="<?php echo strpos($mensagem, 'erro') !== false ? 'erro' : ''; ?>" style="text-align:center;"><?php echo htmlspecialchars($mensagem); ?></p>
                 <?php endif; ?>
             </div>
-                <form action="enviar_email.php" method="post" enctype="multipart/form-data" class="auth-form">
-                    <div class="row">
-                        <div style="grid-column: 1 / -1;">
-                            <label for="email">E-mail</label>
-                            <input type="email" id="email" name="email" required placeholder="Digite seu e-mail">
-                            <div class="erro" id="email-error"></div>
-                        </div>
+            <form action="enviar_email.php" method="post" enctype="multipart/form-data" class="auth-form">
+                <div class="row">
+                    <div style="grid-column: 1 / -1;">
+                        <label for="email">E-mail</label>
+                        <input type="email" id="email" name="email" required placeholder="Digite seu e-mail">
+                        <div class="erro" id="email-error"></div>
                     </div>
-                    <button type="submit" class="btn primary" style="margin-top:16px;">Enviar link</button>
-                </form>
+                </div>
+                <button type="submit" class="btn primary" style="margin-top:16px;">Enviar link</button>
+            </form>
             </div>
             <p class="sub">Insira seu e-mail para receber um link de redefinição de senha.</p>
 

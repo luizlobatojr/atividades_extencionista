@@ -25,3 +25,12 @@ CREATE TABLE IF NOT EXISTS projetos (
   updated_at TIMESTAMP NULL DEFAULT NULL,
   INDEX (usuario_id)
 );
+
+-- Exemplo de DDL para criar a tabela `TOKENS_RESET` compatível com os campos usados no PROJETO
+
+CREATE TABLE tokens_reset (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) NOT NULL,
+    token VARCHAR(128) NOT NULL,
+    expiracao DATETIME NOT NULL
+);
