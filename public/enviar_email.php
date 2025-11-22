@@ -3,6 +3,8 @@ require __DIR__ . '/../vendor/autoload.php';
 require __DIR__ . '/conexao.php';
 require __DIR__ . '/mail_config.php';
 
+var_dump($_ENV);
+exit;
 $mensagem = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
